@@ -2,6 +2,7 @@ package gen
 
 import (
 	"encoding/base64"
+	"encoding/hex"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/staking"
@@ -33,6 +34,8 @@ func GenerateKeys() (map[string]string, error) {
 	blsSignerBytes := bls.SecretKeyToBytes(blsSignerKey)
 
 	blsPublicBytes := bls.PublicKeyToBytes(bls.PublicFromSecretKey(blsSignerKey))
+	blsPublicHex := make([]byte, hex.EncodedLen(len(blsPublicBytes)))
+	hex.Encode(blsPublicHex, blsPublicBytes)
 
 	return map[string]string{
 		stakerCert: base64.StdEncoding.EncodeToString(cBytes),
