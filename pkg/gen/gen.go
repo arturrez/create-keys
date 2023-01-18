@@ -18,8 +18,7 @@ const signerKey = "signer.key_BASE64"
 const publicKey = "publicKey"
 const nodeID = "nodeID"
 
-func generateKeys() (map[string]string, error) {
-	var r map[string]string
+func GenerateKeys() (map[string]string, error) {
 
 	cBytes, kBytes, err := staking.NewCertAndKeyBytes()
 	if err != nil {
@@ -39,16 +38,16 @@ func generateKeys() (map[string]string, error) {
 
 	blsPublicBytes := bls.PublicKeyToBytes(bls.PublicFromSecretKey(blsSignerKey))
 
-	r[stakerCert] = base64.StdEncoding.EncodeToString(kBytes)
-	r[stakerKey] = base64.StdEncoding.EncodeToString(kBytes)
-	r[signerKey] = base64.StdEncoding.EncodeToString(blsSignerBytes)
-	r[publicKey] = string(blsPublicBytes)
-	r[nodeID] = id
-
-	return r, nil
+	return map[string]string{
+		stakerCert: base64.StdEncoding.EncodeToString(kBytes),
+		stakerKey:  base64.StdEncoding.EncodeToString(kBytes),
+		signerKey:  base64.StdEncoding.EncodeToString(blsSignerBytes),
+		publicKey:  string(blsPublicBytes),
+		nodeID:     id,
+	}, nil
 }
 
-func getNodeID(certBytes []byte, keyBytes []byte) (string, err) {
+func getNodeID(certBytes []byte, keyBytes []byte) (string, error) {
 	cert, err := tls.X509KeyPair(certBytes, keyBytes)
 	if err != nil {
 		return "", err
