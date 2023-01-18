@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 )
 
-const secretTag string = "avalanchego-secret-operator"
+const secretTag string = "avalanchego-canon"
 
 type api interface {
 	CreateSecret(ctx context.Context, params *secretsmanager.CreateSecretInput, optFns ...func(*secretsmanager.Options)) (*secretsmanager.CreateSecretOutput, error)
@@ -42,6 +42,8 @@ func New(ctx context.Context,
 }
 
 // todo add KMS support
+// createSecret checks if secret exists and creates a new secret only.
+// tags are generated
 func (s *SecretsManager) createSecret(
 	secretID string,
 	secretData map[string]string) (string, error) {

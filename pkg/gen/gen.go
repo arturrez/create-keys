@@ -9,12 +9,14 @@ import (
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
 )
 
+// Keys for map
 const stakerKey = "staker.key_BASE64"
 const stakerCert = "staker.crt_BASE64"
 const signerKey = "signer.key_BASE64"
-const publicKey = "publicKey"
+const publicKey = "publicKey" //hex encoded
 const nodeID = "nodeID"
 
+// GenerateKeys generates sensitive data
 func GenerateKeys() (map[string]string, error) {
 
 	cBytes, kBytes, err := staking.NewCertAndKeyBytes()
@@ -46,6 +48,7 @@ func GenerateKeys() (map[string]string, error) {
 	}, nil
 }
 
+// getNodeID returns avalanchego nodeID based on certificate and key
 func getNodeID(certBytes []byte, keyBytes []byte) (string, error) {
 	cert, err := staking.LoadTLSCertFromBytes(keyBytes, certBytes)
 
