@@ -50,5 +50,5 @@ func getNodeID(certBytes []byte, keyBytes []byte) (string, error) {
 		return "", err
 	}
 
-	return ids.NodeIDFromCert(cert).String(), nil
+	return ids.NodeIDFromCert(cert.Leaf).String(), nil
 }
